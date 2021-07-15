@@ -52,9 +52,9 @@ jobs:
           - arch: x86_64
             target: x86_64-apple-darwin
             macos-version: "10.15"
-          - arch: arm64
-            target: aarch64-apple-darwin
-            macos-version: "10.15"
+#          - arch: arm64
+#            target: aarch64-apple-darwin
+#            macos-version: "11.0"
 
     name: macOS ${{ matrix.arch }}
     runs-on: macos-${{ matrix.macos-version }}
@@ -83,23 +83,23 @@ jobs:
           name: ${{ github.sha }}
           path: sentry-cli-Darwin-${{ matrix.arch }}
 
-  macos_universal:
-    needs: macos
-    name: macOS universal
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.sha }}
-
-      - name: Link universal binary
-        run: lipo -create -output sentry-cli-Darwin-universal sentry-cli-Darwin-x86_64 sentry-cli-Darwin-arm64
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ github.sha }}
-          path: sentry-cli-Darwin-universal
+#  macos_universal:
+#    needs: macos
+#    name: macOS universal
+#    runs-on: macos-latest
+#
+#    steps:
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: ${{ github.sha }}
+#
+#      - name: Link universal binary
+#        run: lipo -create -output sentry-cli-Darwin-universal sentry-cli-Darwin-x86_64 sentry-cli-Darwin-arm64
+#
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: ${{ github.sha }}
+#          path: sentry-cli-Darwin-universal
 
   windows:
     strategy:
