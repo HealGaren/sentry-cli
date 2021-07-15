@@ -628,7 +628,7 @@ fn execute_set_commits<'a>(
             let result = match ctx.api.get_previous_release_with_commits(org, version)? {
                 OptionalReleaseInfo::Some(prev) => {
                     prev.last_commit.map(|c| c.id).unwrap_or_default()
-                },
+                }
                 OptionalReleaseInfo::None(NoneReleaseInfo {}) => String::new(),
             };
             result
