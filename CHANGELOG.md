@@ -4,7 +4,7 @@
 
 "You know what they say. Fool me once, strike one, but fool me twice... strike three." — Michael Scott
 
-## @healgaren/sentry-cli 1.67.2-beta.1
+## @healgaren/sentry-cli 1.67.2-beta.2
 
 * feat: `---prev-commit-fallback` flag for sentry v9.1.2
   - a solution of https://github.com/getsentry/sentry-cli/issues/875
