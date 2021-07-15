@@ -1,5 +1,5 @@
 {
-  "name": "@sentry/cli",
+  "name": "@healgaren/sentry-cli",
   "version": "1.67.2-beta.1",
   "description": "A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/cli/",
   "homepage": "https://docs.sentry.io/hosted/learn/cli/",

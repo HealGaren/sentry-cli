@@ -1,7 +1,7 @@
 /*
   Typings for @sentry/cli
 */
-declare module '@sentry/cli' {
+declare module '@healgaren/sentry-cli' {
   export interface SentryCliOptions {
     url?: string;
     authToken?: string;
