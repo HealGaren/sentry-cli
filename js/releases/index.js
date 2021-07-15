@@ -93,7 +93,7 @@ class Releases {
     }
 
     if (options.previousCommitFallback) {
-      commitFlags.push('--prev-commit-fallback')
+      commitFlags.push('--prev-commit-fallback');
     }
 
     if (options.ignoreMissing) {

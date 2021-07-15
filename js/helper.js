@@ -161,7 +161,7 @@ function execute(args, live, silent, configFile, config = {}) {
   }
   return new Promise((resolve, reject) => {
     if (live === true) {
-      const output = silent ? 'ignore' : 'inherit'
+      const output = silent ? 'ignore' : 'inherit';
       const pid = childProcess.spawn(getPath(), args, {
         env,
         // stdin, stdout, stderr
