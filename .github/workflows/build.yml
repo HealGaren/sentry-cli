@@ -54,7 +54,7 @@ jobs:
             macos-version: "10.15"
           - arch: arm64
             target: aarch64-apple-darwin
-            macos-version: "11.0"
+            macos-version: "10.15"
 
     name: macOS ${{ matrix.arch }}
     runs-on: macos-${{ matrix.macos-version }}
