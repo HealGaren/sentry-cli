@@ -589,7 +589,7 @@ use {
 fn test_find_matching_rev_with_lightweight_tag() {
     let reference = GitReference::Symbolic("1.9.2");
     let spec = CommitSpec {
-        repo: String::from("getsentry/sentry-cli"),
+        repo: String::from("HealGaren/sentry-cli"),
         path: None,
         rev: String::from("1.9.2"),
         prev_rev: Some(String::from("1.9.1")),
@@ -597,8 +597,8 @@ fn test_find_matching_rev_with_lightweight_tag() {
 
     let repos = [Repo {
         id: String::from("1"),
-        name: String::from("getsentry/sentry-cli"),
-        url: Some(String::from("https://github.com/getsentry/sentry-cli")),
+        name: String::from("HealGaren/sentry-cli"),
+        url: Some(String::from("https://github.com/HealGaren/sentry-cli")),
         provider: RepoProvider {
             id: String::from("integrations:github"),
             name: String::from("GitHub"),
@@ -618,7 +618,7 @@ fn test_find_matching_rev_with_lightweight_tag() {
 fn test_find_matching_rev_with_annotated_tag() {
     let reference = GitReference::Symbolic("1.9.2-hw");
     let spec = CommitSpec {
-        repo: String::from("getsentry/sentry-cli"),
+        repo: String::from("HealGaren/sentry-cli"),
         path: None,
         rev: String::from("1.9.2-hw"),
         prev_rev: Some(String::from("1.9.1")),
@@ -626,8 +626,8 @@ fn test_find_matching_rev_with_annotated_tag() {
 
     let repos = [Repo {
         id: String::from("1"),
-        name: String::from("getsentry/sentry-cli"),
-        url: Some(String::from("https://github.com/getsentry/sentry-cli")),
+        name: String::from("HealGaren/sentry-cli"),
+        url: Some(String::from("https://github.com/healgaren/sentry-cli")),
         provider: RepoProvider {
             id: String::from("integrations:github"),
             name: String::from("GitHub"),
