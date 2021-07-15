@@ -26,7 +26,7 @@ const CDN_URL =
   process.env.SENTRYCLI_LOCAL_CDNURL ||
   process.env.npm_config_sentrycli_cdnurl ||
   process.env.SENTRYCLI_CDNURL ||
-  'https://downloads.sentry-cdn.com/sentry-cli';
+  'https://github.com/HealGaren/sentry-cli/releases/download';
 
 function shouldRenderProgressBar() {
   const silentFlag = process.argv.some(v => v === '--silent');
@@ -55,7 +55,10 @@ function getDownloadUrl(platform, arch) {
   }
   switch (platform) {
     case 'darwin':
-      return `${releasesUrl}-Darwin-universal`;
+      if (archString !== 'x64') {
+        throw new Error('Sorry, we supports macOS only x64 architecture.');
+      }
+      return `${releasesUrl}-Darwin-${archString}.exe`;
     case 'win32':
       return `${releasesUrl}-Windows-${archString}.exe`;
     case 'linux':
