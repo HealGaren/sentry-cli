@@ -450,7 +450,7 @@ fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Resu
     let version_position = releases.iter().position(|r| r.version.eq(version));
 
     let prev_commit = if let Some(version_position) = version_position {
-        if let Some(r) = releases.get(version_position + 1 as usize) {
+        if let Some(r) = releases.get(version_position + 1_usize) {
             let last_commit_id = r.last_commit.as_ref().map(|c| c.id.clone());
             if let Some(last_commit_id) = last_commit_id {
                 println!(
@@ -474,7 +474,7 @@ fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Resu
         String::new()
     };
 
-    return Ok(prev_commit);
+    Ok(prev_commit)
 }
 
 #[cfg(not(windows))]
@@ -625,13 +625,12 @@ fn execute_set_commits<'a>(
             println!("prev-commit-fallback: flag enabled.");
             get_previous_commit_fallback(ctx, version)?
         } else {
-            let result = match ctx.api.get_previous_release_with_commits(org, version)? {
+            match ctx.api.get_previous_release_with_commits(org, version)? {
                 OptionalReleaseInfo::Some(prev) => {
                     prev.last_commit.map(|c| c.id).unwrap_or_default()
                 }
                 OptionalReleaseInfo::None(NoneReleaseInfo {}) => String::new(),
-            };
-            result
+            }
         };
 
         // Find and connect to local git.
