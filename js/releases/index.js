@@ -71,6 +71,9 @@ class Releases {
    * @param {boolean} options.ignoreMissing When the flag is set and the previous release
    * commit was not found in the repository, will create a release with the default commits
    * count (or the one specified with `--initial-depth`) instead of failing the command.
+   * @param {boolean} options.previousCommitFallback previous commit api fallback flag.
+   * for sentry on-premise v9.1.2
+   * count (or the one specified with `--initial-depth`) instead of failing the command.
    * @returns {Promise} A promise that resolves when the commits have been associated
    * @memberof SentryReleases
    */
@@ -87,6 +90,10 @@ class Releases {
       commitFlags = ['--commit', `${options.repo}@${options.previousCommit}..${options.commit}`];
     } else {
       commitFlags = ['--commit', `${options.repo}@${options.commit}`];
+    }
+
+    if (options.previousCommitFallback) {
+      commitFlags.push('--prev-commit-fallback')
     }
 
     if (options.ignoreMissing) {
