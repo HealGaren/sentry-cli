@@ -103,6 +103,9 @@ pub fn make_app<'a, 'b: 'a>(app: App<'a, 'b>) -> App<'a, 'b> {
                         This requires that the command is run from within a git repository.  \
                         sentry-cli will then automatically find remotely configured \
                         repositories and discover commits."))
+            .arg(Arg::with_name("prev-commit-fallback")
+                .long("prev-commit-fallback")
+                .help("fallback of previous commit api (for sentry v9.1.2)"))
             .arg(Arg::with_name("ignore-missing")
                 .long("ignore-missing")
                 .help("When the flag is set and the previous release commit was not found in the repository, \
@@ -438,6 +441,40 @@ fn path_as_url(path: &Path) -> String {
     path.display().to_string().replace("\\", "/")
 }
 
+fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Result<String, Error> {
+    let org = ctx.get_org()?;
+    let project = ctx.get_project_default().ok();
+
+    let releases = ctx.api.list_releases(org, project.as_deref())?;
+
+    let version_position = releases
+        .iter()
+        .position(|r| r.version.eq(version));
+
+    let prev_commit = if let Some(version_position) = version_position {
+        if let Some(r) = releases.get(version_position + 1 as usize) {
+            let last_commit_id = r.last_commit
+                .as_ref()
+                .map(|c| c.id.clone());
+            if let Some(last_commit_id) = last_commit_id {
+                println!("prev-commit-fallback: previous commit found: {}", last_commit_id);
+                last_commit_id
+            } else {
+                println!("prev-commit-fallback: previous version's lastCommit does not exist.");
+            }
+        } else {
+            println!("prev-commit-fallback: previous version does not exist.");
+            String::new()
+        }
+    } else {
+        println!("prev-commit-fallback: release version {} does not exist :(", version);
+        String::new()
+    };
+
+    return Ok(prev_commit)
+
+}
+
 #[cfg(not(windows))]
 fn path_as_url(path: &Path) -> String {
     path.display().to_string()
@@ -580,10 +617,17 @@ fn execute_set_commits<'a>(
         if matches.is_present("auto") {
             println!("Could not determine any commits to be associated with a repo-based integration. Proceeding to find commits from local git tree.");
         }
+
         // Get the commit of the most recent release.
-        let prev_commit = match ctx.api.get_previous_release_with_commits(org, version)? {
-            OptionalReleaseInfo::Some(prev) => prev.last_commit.map(|c| c.id).unwrap_or_default(),
-            OptionalReleaseInfo::None(NoneReleaseInfo {}) => String::new(),
+        let prev_commit = if matches.is_present("prev-commit-fallback") {
+            println!("prev-commit-fallback: flag enabled.");
+            get_previous_commit_fallback(ctx, version)?
+        } else {
+            let result = match ctx.api.get_previous_release_with_commits(org, version)? {
+                OptionalReleaseInfo::Some(prev) => prev.last_commit.map(|c| c.id).unwrap_or_default(),
+                OptionalReleaseInfo::None(NoneReleaseInfo {}) => String::new(),
+            };
+            result
         };
 
         // Find and connect to local git.
