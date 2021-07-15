@@ -461,6 +461,7 @@ fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Resu
                 last_commit_id
             } else {
                 println!("prev-commit-fallback: previous version's lastCommit does not exist.");
+                String::new()
             }
         } else {
             println!("prev-commit-fallback: previous version does not exist.");
