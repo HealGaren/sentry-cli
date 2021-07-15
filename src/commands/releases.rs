@@ -447,17 +447,16 @@ fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Resu
 
     let releases = ctx.api.list_releases(org, project.as_deref())?;
 
-    let version_position = releases
-        .iter()
-        .position(|r| r.version.eq(version));
+    let version_position = releases.iter().position(|r| r.version.eq(version));
 
     let prev_commit = if let Some(version_position) = version_position {
         if let Some(r) = releases.get(version_position + 1 as usize) {
-            let last_commit_id = r.last_commit
-                .as_ref()
-                .map(|c| c.id.clone());
+            let last_commit_id = r.last_commit.as_ref().map(|c| c.id.clone());
             if let Some(last_commit_id) = last_commit_id {
-                println!("prev-commit-fallback: previous commit found: {}", last_commit_id);
+                println!(
+                    "prev-commit-fallback: previous commit found: {}",
+                    last_commit_id
+                );
                 last_commit_id
             } else {
                 println!("prev-commit-fallback: previous version's lastCommit does not exist.");
@@ -468,12 +467,14 @@ fn get_previous_commit_fallback(ctx: &ReleaseContext<'_>, version: &str) -> Resu
             String::new()
         }
     } else {
-        println!("prev-commit-fallback: release version {} does not exist :(", version);
+        println!(
+            "prev-commit-fallback: release version {} does not exist :(",
+            version
+        );
         String::new()
     };
 
-    return Ok(prev_commit)
-
+    return Ok(prev_commit);
 }
 
 #[cfg(not(windows))]
@@ -625,7 +626,9 @@ fn execute_set_commits<'a>(
             get_previous_commit_fallback(ctx, version)?
         } else {
             let result = match ctx.api.get_previous_release_with_commits(org, version)? {
-                OptionalReleaseInfo::Some(prev) => prev.last_commit.map(|c| c.id).unwrap_or_default(),
+                OptionalReleaseInfo::Some(prev) => {
+                    prev.last_commit.map(|c| c.id).unwrap_or_default()
+                },
                 OptionalReleaseInfo::None(NoneReleaseInfo {}) => String::new(),
             };
             result
