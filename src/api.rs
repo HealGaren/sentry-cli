@@ -1565,7 +1565,7 @@ impl ApiRequest {
             is_authenticated: false,
             body: None,
             progress_bar_mode: ProgressBarMode::Disabled,
-            max_retries: 0,
+            max_retries: 3,
             retry_on_statuses: &[],
         };
 
@@ -1680,10 +1680,14 @@ impl ApiRequest {
                 retry_number, self.max_retries,
             );
 
-            let mut rv = self.send_into(&mut out)?;
-            if retry_number >= self.max_retries || !self.retry_on_statuses.contains(&rv.status) {
-                rv.body = Some(out);
-                return Ok(rv);
+            let rv_result = self.send_into(&mut out);
+
+            if rv_result.is_ok() {
+                let mut rv = rv_result.unwrap();
+                if retry_number >= self.max_retries || !self.retry_on_statuses.contains(&rv.status) {
+                    rv.body = Some(out);
+                    return Ok(rv);
+                }
             }
 
             // Exponential backoff
