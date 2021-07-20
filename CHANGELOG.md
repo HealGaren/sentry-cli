@@ -4,10 +4,11 @@
 
 "You know what they say. Fool me once, strike one, but fool me twice... strike three." — Michael Scott
 
-## @healgaren/sentry-cli 1.67.2-beta.2
+## @healgaren/sentry-cli 1.67.2-beta.3
 
 * feat: `---prev-commit-fallback` flag for sentry v9.1.2
   - a solution of https://github.com/getsentry/sentry-cli/issues/875
+* fix: retry maximum 3 times when request failed
 
 ## sentry-cli 1.67.1
 
