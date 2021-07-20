@@ -1682,8 +1682,7 @@ impl ApiRequest {
 
             let rv_result = self.send_into(&mut out);
 
-            if rv_result.is_ok() {
-                let mut rv = rv_result.unwrap();
+            if let Ok(mut rv) = rv_result {
                 if retry_number >= self.max_retries || !self.retry_on_statuses.contains(&rv.status)
                 {
                     rv.body = Some(out);
