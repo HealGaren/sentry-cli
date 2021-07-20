@@ -1684,7 +1684,8 @@ impl ApiRequest {
 
             if rv_result.is_ok() {
                 let mut rv = rv_result.unwrap();
-                if retry_number >= self.max_retries || !self.retry_on_statuses.contains(&rv.status) {
+                if retry_number >= self.max_retries || !self.retry_on_statuses.contains(&rv.status)
+                {
                     rv.body = Some(out);
                     return Ok(rv);
                 }
